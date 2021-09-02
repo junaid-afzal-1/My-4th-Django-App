@@ -8,6 +8,8 @@ class Person(models.Model):
     age = models.PositiveIntegerField()
     contact = models.CharField(max_length=15)
 
+    
+
 
     def __str__(self):
         return self.name
@@ -22,3 +24,9 @@ class Student(Person):
 
     def __str__(self):
         return (self.name + ' ' + self.roll_no)
+
+
+class Employe(Person):
+    salary = models.PositiveIntegerField()
+    experience = models.PositiveIntegerField()
+

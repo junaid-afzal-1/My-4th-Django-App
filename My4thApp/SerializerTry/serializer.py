@@ -1,5 +1,6 @@
+
 from django.db.models import fields
-from SerializerTry.models import Person,Student
+from SerializerTry.models import Person,Student,Employe
 from rest_framework import serializers
 
 
@@ -7,7 +8,7 @@ from rest_framework import serializers
 class PersonSerializer(serializers.Serializer):
 
     name = serializers.CharField(max_length=50)
-    age = serializers.PositiveIntegerField()
+    #age = serializers.PositiveIntegerField()
     contact = serializers.CharField(max_length=15)
 
     def create(self, validated_data):
@@ -28,4 +29,13 @@ class StudentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Student
-        fields = ['name','contact','roll_no','section','cgpa','semester']
+        fields = ['roll_no','section','cgpa','semester']
+
+
+class EmployeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employe
+        fields = ['name','age','contact','salary', 'experience']
+        
+
+
