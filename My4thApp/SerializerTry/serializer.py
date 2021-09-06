@@ -1,6 +1,5 @@
-
 from django.db.models import fields
-from SerializerTry.models import Person,Student,Employe
+from SerializerTry.models import Person,Student,Employe,Doctor, Teacher
 from rest_framework import serializers
 
 
@@ -38,4 +37,14 @@ class EmployeSerializer(serializers.ModelSerializer):
         fields = ['name','age','contact','salary', 'experience']
         
 
+class DoctorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ['name','age','contact','level', 'specility']
 
+
+class TeacherSerializer(serializers.ModelSerializer):
+    class Meta:
+    
+        model = Teacher
+        fields = fields = ['name','age','contact','subject']

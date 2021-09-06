@@ -30,3 +30,47 @@ class Employe(Person):
     salary = models.PositiveIntegerField()
     experience = models.PositiveIntegerField()
 
+
+
+class Doctor(Person):
+
+    junior = 'Junior'
+    senior  = 'Senior'
+    choice_lvl = [
+                    (junior,'Junior'),
+                    (senior,'Senior')
+                ]  
+
+    heart = 'Heart Surgen'
+    brain = 'Brain Surgen'
+
+    choice_specility = [
+                        (heart,'Heart Surgen'),
+                        (brain,'Brain Surgen')
+                        ]       
+
+
+    level = models.CharField(max_length=20,choices= choice_lvl)
+    specility = models.CharField(max_length=15,choices=choice_specility)
+
+
+
+
+class Teacher(Person):
+    Eng = 'English'
+    Urdu = 'Urdu'
+    Math = 'Math'
+
+    choice = [
+        (Eng, 'English'),
+        (Urdu, 'Urdu'),
+        (Math, 'Math'),
+
+    ]
+
+    subject = models.CharField(max_length=10,choices=choice,default=None)
+
+
+
+
+

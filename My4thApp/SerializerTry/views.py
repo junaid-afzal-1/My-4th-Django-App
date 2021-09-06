@@ -2,11 +2,11 @@ from django import http
 from django.shortcuts import render
 from django.http.response import Http404, HttpResponse,JsonResponse
 from django.http import request
-from .models import Student,Person,Employe
-from .serializer import StudentSerializer,PersonSerializer,EmployeSerializer
+from .models import Doctor, Student,Person,Employe, Teacher
+from .serializer import DoctorSerializer, StudentSerializer,PersonSerializer,EmployeSerializer, TeacherSerializer
 from rest_framework.views import APIView, View
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics,viewsets
 # Create your views here.
 
 
@@ -100,3 +100,20 @@ class EmployeViewSpecific(APIView):
         return Response('Record Delete Successfully',status=status.HTTP_204_NO_CONTENT)
 
    
+
+class DoctorList(generics.ListCreateAPIView):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+
+
+class DoctorDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+
+
+class TeacherViewSet(viewsets.ModelViewSet):
+    serializer_class = TeacherSerializer
+    queryset = Teacher.objects.all()
+
+
+    
