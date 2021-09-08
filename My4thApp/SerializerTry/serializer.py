@@ -7,7 +7,7 @@ from rest_framework import serializers
 class PersonSerializer(serializers.Serializer):
 
     name = serializers.CharField(max_length=50)
-    #age = serializers.PositiveIntegerField()
+    age = serializers.IntegerField()
     contact = serializers.CharField(max_length=15)
 
     def create(self, validated_data):

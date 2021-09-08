@@ -1,13 +1,25 @@
 from django import http
+import django
 from django.shortcuts import render
-from django.http.response import Http404, HttpResponse,JsonResponse
+from django.http.response import Http404, HttpResponse, HttpResponseRedirect,JsonResponse
 from django.http import request
 from .models import Doctor, Student,Person,Employe, Teacher
 from .serializer import DoctorSerializer, StudentSerializer,PersonSerializer,EmployeSerializer, TeacherSerializer
 from rest_framework.views import APIView, View
 from rest_framework.response import Response
 from rest_framework import status, generics,viewsets
+from .forms import NameForm,PersonForm, UserForm
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
 # Create your views here.
+
+
+
+
+def myform(request):
+    return render(request,'name.html')
+
+
 
 
 
@@ -22,6 +34,11 @@ def return_person(request):
     person_ser = PersonSerializer(person,many = True)
 
     return JsonResponse(person_ser.data,safe=False)
+
+
+def add_person(request):
+    data = request.POST
+    return HttpResponse(request, data)
 
 
 
@@ -116,4 +133,90 @@ class TeacherViewSet(viewsets.ModelViewSet):
     queryset = Teacher.objects.all()
 
 
+
+
+
+
+
+def get_name(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+
+            
+
+
+
+            return HttpResponseRedirect('thanks/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = NameForm()
+
+    return render(request, 'name.html', {'form': form})
+
+
+def thanks(request):
+    return HttpResponse("<h1>Thanks for giving us time</h1>")
+
+
+
+def send_m(request):
+    send_mail(
+    subject= 'test mail',
+    message= 'mail from django',
+    from_email= 'abc@gmail.com',
+    recipient_list = ['junaidafzal7274@gmail.com']
+    #fail_silently=False,
+    )
+
+    return HttpResponse('<H1>MAIL send</h1>')
+
+
+def insert_person(request):
+    if request.method == 'POST':
+        form = PersonForm(request.POST)
+
+        ser = PersonSerializer(data =form.data)
+        if ser.is_valid():
+            p = Person()
+            p.name = ser.data.get('name')
+            p.age = ser.data.get('age')
+            p.contact = ser.data.get('contact')
+
+            p.save()
+            return HttpResponse('<h1>Peron Add Successfully</h1>')
+
+        else:
+            return HttpResponse('<h1>Bad Response</h1>')
     
+    else:
+        form = PersonForm()
+
+    return render(request, 'add_person.html', {'form': form})
+
+
+
+
+def signup(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+
+
+        if user_form.is_valid():
+            user_form.save()
+            return HttpResponse('<h1>Peron Add Successfully</h1>')
+
+        else:
+            return HttpResponse('<h1>Bad Response</h1>')
+    
+    else:
+        form = UserForm()
+
+    return render(request, 'signup.html', {'form': form})
