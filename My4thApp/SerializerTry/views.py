@@ -1,5 +1,6 @@
 from django import http
 import django
+from django.contrib.auth import authenticate,login, logout
 from django.shortcuts import render
 from django.http.response import Http404, HttpResponse, HttpResponseRedirect,JsonResponse
 from django.http import request
@@ -12,6 +13,7 @@ from .forms import NameForm,PersonForm, UserForm
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 # Create your views here.
+from django.contrib.auth.forms import AuthenticationForm
 
 
 
@@ -211,7 +213,7 @@ def signup(request):
 
         if user_form.is_valid():
             user_form.save()
-            return HttpResponse('<h1>Peron Add Successfully</h1>')
+            return render(request,'signin.html')
 
         else:
             return HttpResponse('<h1>Bad Response</h1>')
@@ -220,3 +222,43 @@ def signup(request):
         form = UserForm()
 
     return render(request, 'signup.html', {'form': form})
+
+
+
+def signin(request):
+    if request.method == 'POST':
+
+
+        form = AuthenticationForm(request=request,data = request.POST)
+        if form.is_valid():
+            usr_name = form.cleaned_data.get('username')
+            usr_password = form.cleaned_data.get('password')
+            user = authenticate(username = usr_name, password = usr_password)
+
+            if user is not None:
+                login(request,user)
+                
+                return HttpResponse('<h1>Welcome {}</h1>'.format(request.POST.get('username')))
+            else:
+                return HttpResponse('<h1>User {} Not Exist </h1>'.format(request.POST.get('username')))
+        else:
+            return HttpResponse('<h1>Invalid Input</h1>')
+    else:
+        form = AuthenticationForm()
+        return render(request = request,
+               template_name = "signin.html",
+               context={"form":form})
+                    
+
+
+
+def reg(request):
+    return render(request=request,template_name='registration.html')
+
+
+def signout(request):
+
+    user = request.user
+    name = user.username
+    logout(request)
+    return HttpResponse('Good Bye {}'.format(name))

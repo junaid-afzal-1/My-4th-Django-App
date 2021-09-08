@@ -29,4 +29,7 @@ urlpatterns = [
     path('send-m/', views.send_m),
     path('add-person/', views.insert_person),
     path('signup/', views.signup),
+    path('signin/', views.signin),
+    path('signout/', views.signout),
+    path('reg/', views.reg),
 ]
