@@ -216,7 +216,7 @@ def signup(request):
             return render(request,'signin.html')
 
         else:
-            return HttpResponse('<h1>Bad Response</h1>')
+            return HttpResponse('<h1>Bad Response something not correct</h1>')
     
     else:
         form = UserForm()
